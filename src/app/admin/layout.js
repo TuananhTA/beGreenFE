@@ -4,8 +4,7 @@ import React, { useState } from 'react';
 import './Admin.scss';
 import SideBar from './SideBar';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import 'react-toastify/dist/ReactToastify.css';
-import 'bootstrap';
+
 
 export default function AdminLayout({ children }) {
     const [show, setShow] = useState(true);
