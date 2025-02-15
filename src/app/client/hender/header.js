@@ -9,7 +9,7 @@ import { FaUserAlt, FaSignOutAlt, FaCartPlus, FaMicroblog } from 'react-icons/fa
 import './header.scss';
 
 function Header() {
-    const [account, setAccount] = useState(false);
+    const [account, setAccount] = useState(true);
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
         if (token) {
@@ -45,7 +45,7 @@ function Header() {
                             <Dropdown align="end">
                                 <Dropdown.Toggle as="a" href="#" className="d-flex text-dark align-items-center">
                                     <p style={{ fontSize: '16px' }} className="m-0">Hi, Nam</p>
-                                    <img class="size-10" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="" />
+                                    <img className="size-10" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="" />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu>
                                     <Dropdown.Item as={Link} href="/profile">
@@ -70,7 +70,7 @@ function Header() {
                                         <FaCartPlus style={{ fontSize: '24px' }} />
                                     </Link>
                                     <Dropdown.Toggle as="div" className="d-flex align-items-center">
-                                        <img class="size-10" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="" />
+                                        <img className="size-10" src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" alt="" />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu>
                                         <Dropdown.Item as={Link} href="/login">Đăng nhập</Dropdown.Item>

@@ -3,9 +3,9 @@ import { NextResponse } from 'next/server';
 export function middleware(req) {
     const role = req.cookies.get('role')?.value;
     const isAdmin = role === 'admin';
-    // if (req.nextUrl.pathname.startsWith('/admins') && !isAdmin) {
-    //     return NextResponse.redirect(new URL('/403', req.url));
-    // }
+    if (req.nextUrl.pathname.startsWith('/admin') && !isAdmin) {
+        return NextResponse.redirect(new URL('/403', req.url));
+    }
     if (!isAdmin && req.nextUrl.pathname === '/') {
         return NextResponse.redirect(new URL('/client', req.url));
     }
@@ -14,5 +14,5 @@ export function middleware(req) {
 
 // Cấu hình matcher để middleware áp dụng cho các route cụ thể
 export const config = {
-    matcher: ['/', '/admins/:path*']
+    matcher: ['/', '/admin/:path*']
 };
