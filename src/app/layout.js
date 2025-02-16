@@ -3,6 +3,8 @@ import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-toastify/dist/ReactToastify.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

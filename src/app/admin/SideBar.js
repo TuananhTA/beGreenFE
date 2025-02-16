@@ -1,12 +1,7 @@
 import { useState, useEffect } from "react";
-import { FaUser, FaMoneyBillAlt, FaShoePrints, FaUserAstronaut, FaUsers,FaTimes,FaBars,FaChevronDown } from 'react-icons/fa';
+import {FaMoneyBillAlt,FaTimes,FaBars,FaChevronDown } from 'react-icons/fa';
 import { FaChartPie, FaBoxesPacking } from "react-icons/fa6";
-import { MdOutlinePayment, MdLogout } from "react-icons/md";
-import { GiConverseShoe, GiPresent, GiRunningShoe, GiMaterialsScience } from "react-icons/gi";
-import { RiDiscountPercentFill } from "react-icons/ri";
-import { BiSolidDiscount, BiCategory } from "react-icons/bi";
-import { IoMdColorFill, IoIosResize } from "react-icons/io";
-import { TbBrandArc } from "react-icons/tb";
+import { MdOutlinePayment } from "react-icons/md";
 
 const SideBar = () => {
     const [isOpen, setIsOpen] = useState(true);
@@ -41,26 +36,26 @@ const SideBar = () => {
 
                 {/* Menu */}
                 <nav className="mt-4 flex-grow">
-                    <a href="#" className="flex items-center text-gray-700 py-2 px-4 hover:bg-gray-200 transition-all">
+                    <a href="#" className=" mt-2 mb-2 flex items-center text-gray-700 py-2 px-4 hover:bg-gray-200 transition-all">
                         <FaChartPie  className="text-lg"/>
                         <span className={`ml-3 text-lg transition-all ${!isOpen && "hidden"}`}>Thống kê</span>
                     </a>
-                    <a href="#" className="flex items-center text-gray-700 py-2 px-4 hover:bg-gray-200 transition-all">
+                    <a href="#" className="  mt-2 mb-2 flex items-center text-gray-700 py-2 px-4 hover:bg-gray-200 transition-all">
                         <FaMoneyBillAlt className="text-lg"/>
                         <span className={`ml-3 text-lg transition-all ${!isOpen && "hidden"}`}>Bán hàng</span>
                     </a>
-                    <a href="#" className="flex items-center text-gray-700 py-2 px-4 hover:bg-gray-200 transition-all">
+                    <a href="#" className=" mt-2 mb-2 flex items-center text-gray-700 py-2 px-4 hover:bg-gray-200 transition-all">
                         <MdOutlinePayment className="text-lg"/>
                         <span className={`ml-3 text-lg transition-all ${!isOpen && "hidden"}`}>Quán lý hóa đơn</span>
                     </a>
-                    <div className="relative">
+                    <div className="  mt-2 mb-2 relative">
                         <button
                             className="flex w-full items-center text-gray-700 py-2 px-4 hover:bg-gray-200 transition-all"
                             onClick={() => toggleMenu("thongke")}
                         >
                             <FaBoxesPacking   className="text-lg"/>
                             <span className={`ml-3 text-lg text-justify flex-1 transition-all ${!isOpen && "hidden"}`}>
-                                Sản phẩm
+                                Quản lý sản phẩm
                             </span>
                             {isOpen && <FaChevronDown
                                 className={`text-sm transition-transform ${openMenu === "thongke" ? "rotate-180" : ""}`}/>}
