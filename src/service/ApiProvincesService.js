@@ -1,7 +1,7 @@
 // Importing the JSON files
-import citys from '../json/city.json';
-import districts from '../json/districts.json';
-import wards from '../json/wards.json';
+import citys from '../../json/city.json';
+import districts from '../../json/districts.json';
+import wards from '../../json/wards.json';
 
 // Functions to get cities, districts, and wards data
 export const getCities = () => {

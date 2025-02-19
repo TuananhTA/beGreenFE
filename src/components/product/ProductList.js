@@ -40,11 +40,12 @@ export default function ProductList({ productList, currentPage, totalPages, curr
                                     checked={selectAll}
                                     onChange={handleSelectAll}
                                 />
-                                Product
+                                Sản phẩm
                             </th>
-                            <th>SKU</th>
-                            <th>Quantity</th>
-                            <th>Retail Price</th>
+                            <th>Số lượng</th>
+                            <th>Số lượng bán lẻ</th>
+                            <th>Giá bán lẻ</th>
+                            <th>Đơn vị</th>
                             <th>Updated on</th>
                             <th>Status</th>
                             <th></th>
@@ -62,7 +63,7 @@ export default function ProductList({ productList, currentPage, totalPages, curr
                                             onChange={() => handleSelectProduct(index)}
                                         />
                                         <img
-                                            src={product.images[0]}
+                                            src={product.images.find(item => item.slot === 0).url || "/logoPage.png"}
                                             alt={product.name}
                                             className="rounded-circle me-2"
                                             width={50}
@@ -74,15 +75,18 @@ export default function ProductList({ productList, currentPage, totalPages, curr
                                         </div>
                                     </div>
                                 </td>
-                                <td>--</td>
                                 <td>{product.quantity}</td>
+                                <td>{product.quantityRetail}</td>
                                 <td>{product.price}</td>
+                                <td>{product.unitName}</td>
                                 <td>
                                     <div>{formatDateTime(product.updatedAt).updatedOn}</div>
-                                    <div className="text-muted small">{formatDateTime(product.updatedAt).updatedTime}</div>
+                                    <div
+                                        className="text-muted small">{formatDateTime(product.updatedAt).updatedTime}</div>
                                 </td>
                                 <td>
-                                        <span className={`badge bg-${product.status === "ACTIVE" ? "success" : "danger"}`}>
+                                        <span
+                                            className={`badge bg-${product.status === "ACTIVE" ? "success" : "danger"}`}>
                                             {product.status}
                                         </span>
                                 </td>
