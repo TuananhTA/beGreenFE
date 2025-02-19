@@ -40,7 +40,7 @@ const SideBar = () => {
                         <FaChartPie  className="text-lg"/>
                         <span className={`ml-3 text-lg transition-all ${!isOpen && "hidden"}`}>Thống kê</span>
                     </a>
-                    <a href="#" className="  mt-2 mb-2 flex items-center text-gray-700 py-2 px-4 hover:bg-gray-200 transition-all">
+                    <a href="/admin/order" className="  mt-2 mb-2 flex items-center text-gray-700 py-2 px-4 hover:bg-gray-200 transition-all">
                         <FaMoneyBillAlt className="text-lg"/>
                         <span className={`ml-3 text-lg transition-all ${!isOpen && "hidden"}`}>Bán hàng</span>
                     </a>

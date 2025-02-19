@@ -1,7 +1,7 @@
 "use client"
 import ProductList from "@/components/product/ProductList";
 import { useState } from 'react';
-import {getProduct} from "@/app/Service/ProductSevice";
+import {getProduct} from "@/service/ProductSevice";
 
 const Product = () =>{
     const [activeTab, setActiveTab] = useState('All');

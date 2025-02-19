@@ -1,23 +1,75 @@
 "use client";
-import { useCallback, useState } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { useDropzone } from "react-dropzone";
+import { toast } from "react-toastify";
 
-export default function ImageUploader() {
-    const [images, setImages] = useState(Array(6).fill(null));
+const MAX_IMAGES = 6;
 
-    const onDrop = useCallback((acceptedFiles, index) => {
-        const imageFile = acceptedFiles[0]; // Chỉ nhận 1 ảnh cho mỗi ô
-        if (!imageFile) return;
+export default function ImageUploader({ onFilesChange }) {
+    const [images, setImages] = useState(Array(MAX_IMAGES).fill(null));
+    const prevImagesRef = useRef(images);
 
-        const newImages = [...images];
-        newImages[index] = Object.assign(imageFile, { preview: URL.createObjectURL(imageFile) });
-        setImages(newImages);
-    }, [images]);
+    // Chỉ gọi onFilesChange nếu images thực sự thay đổi
+    useEffect(() => {
+        const filteredImages = images.filter(img => img !== null);
+        if (JSON.stringify(filteredImages) !== JSON.stringify(prevImagesRef.current)) {
+            prevImagesRef.current = filteredImages;
+            onFilesChange(filteredImages);
+        }
+    }, [images, onFilesChange]);
+
+    const onDropNew = useCallback((acceptedFiles) => {
+        setImages((prevImages) => {
+            let newImages = [...prevImages];
+
+            // Lọc ra các file trùng trước khi cập nhật state
+            const existingNames = new Set(newImages.filter(img => img !== null).map(img => img.name));
+            const duplicateFiles = acceptedFiles.filter(file => existingNames.has(file.name));
+
+            // Nếu có file trùng, chỉ thông báo một lần và không xử lý tiếp
+            if (duplicateFiles.length > 0) {
+                toast.error(`Các ảnh sau đã tồn tại: ${duplicateFiles.map(f => f.name).join(", ")}`);
+                return prevImages;
+            }
+
+            // Thêm ảnh mới nếu chưa đạt giới hạn
+            for (let file of acceptedFiles) {
+                const firstEmptyIndex = newImages.indexOf(null);
+                if (firstEmptyIndex !== -1) {
+                    newImages[firstEmptyIndex] = Object.assign(file, { preview: URL.createObjectURL(file) });
+                } else {
+                    toast.error(`Chỉ có thể tải lên tối đa ${MAX_IMAGES} ảnh!`);
+                    break;
+                }
+            }
+
+            return newImages;
+        });
+    }, []);
 
     const removeImage = (index) => {
-        const newImages = [...images];
-        newImages[index] = null;
-        setImages(newImages);
+        setImages((prevImages) => {
+            let newImages = [...prevImages];
+            newImages[index] = null; // Xóa ảnh tại vị trí index
+            return newImages;
+        });
+    };
+
+    const handleDragStart = (event, index) => {
+        event.dataTransfer.setData("text/plain", index);
+    };
+
+    const handleDropImage = (event, dropIndex) => {
+        event.preventDefault();
+        const draggedIndex = parseInt(event.dataTransfer.getData("text/plain"), 10);
+
+        if (draggedIndex === dropIndex || isNaN(draggedIndex)) return;
+
+        setImages((prevImages) => {
+            let newImages = [...prevImages];
+            [newImages[draggedIndex], newImages[dropIndex]] = [newImages[dropIndex], newImages[draggedIndex]];
+            return newImages;
+        });
     };
 
     return (
@@ -30,8 +82,10 @@ export default function ImageUploader() {
                             <DropzoneBox
                                 key={index}
                                 file={file}
-                                onDrop={(files) => onDrop(files, index)}
+                                onDropNew={onDropNew}
                                 onRemove={() => removeImage(index)}
+                                onDragStart={(event) => handleDragStart(event, index)}
+                                onDropImage={(event) => handleDropImage(event, index)}
                             />
                         );
                     })}
@@ -41,15 +95,23 @@ export default function ImageUploader() {
     );
 }
 
-function DropzoneBox({ file, onDrop, onRemove }) {
+function DropzoneBox({ file, onDropNew, onRemove, onDragStart, onDropImage }) {
     const { getRootProps, getInputProps } = useDropzone({
-        onDrop,
-        accept: "image/*",
+        onDrop: (files) => onDropNew(files),
+        accept: "image/png, image/jpg, image/jpeg",
         maxFiles: 1,
+        multiple: false,
     });
 
     return (
-        <div {...getRootProps()} className="w-40 h-40 border border-gray-400 m-2 flex items-center justify-center cursor-pointer relative">
+        <div
+            {...getRootProps()}
+            className="w-40 h-40 border border-gray-400 m-2 flex items-center justify-center cursor-pointer relative"
+            draggable={file !== null}
+            onDragStart={file ? onDragStart : undefined}
+            onDragOver={(e) => e.preventDefault()}
+            onDrop={onDropImage}
+        >
             <input {...getInputProps()} />
             {file ? (
                 <>
