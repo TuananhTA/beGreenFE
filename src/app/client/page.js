@@ -1,13 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import Form from 'react-bootstrap/Form';
+import Banner from './banner/Banner'
+import Content from './content/Content'
 
-function RangeExample() {
+function Home() {
   return (
-    <>
-      <Form.Label>Range</Form.Label>
-      <Form.Range />
-    </>
+    <div className='homePage'>
+      <Banner />
+      <Content />
+    </div>
   );
 }
 
-export default RangeExample;
+export default Home;
