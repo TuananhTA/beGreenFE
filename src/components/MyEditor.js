@@ -1,64 +1,24 @@
-// components/SlateEditor.js
-import React, { useMemo, useState, useCallback } from 'react';
-import { createEditor } from 'slate';
-import { Slate, Editable, withReact, useSlate } from 'slate-react';
-import { Transforms, Editor, Range } from 'slate';
+// components/custom-editor.js
+'use client' // only in App Router
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import { ClassicEditor, Essentials, Paragraph, Bold, Italic, BlockQuote  } from 'ckeditor5';
+import { FormatPainter } from 'ckeditor5-premium-features';
 
-const SlateEditor = () => {
-    const editor = useMemo(() => withReact(createEditor()), []);
-    const [value, setValue] = useState([
-        {
-            type: 'paragraph',
-            children: [{ text: 'Type something...' }],
-        },
-    ]);
+import 'ckeditor5/ckeditor5.css';
+import 'ckeditor5-premium-features/ckeditor5-premium-features.css';
 
-    const renderElement = useCallback((props) => {
-        switch (props.element.type) {
-            case 'heading':
-                return <h1 {...props.attributes}>{props.children}</h1>;
-            case 'list':
-                return <ul {...props.attributes}>{props.children}</ul>;
-            case 'list-item':
-                return <li {...props.attributes}>{props.children}</li>;
-            default:
-                return <p {...props.attributes}>{props.children}</p>;
-        }
-    }, []);
-
-    const renderLeaf = useCallback((props) => {
-        return <span {...props.attributes} className={props.leaf.italic ? 'italic' : ''}>{props.children}</span>;
-    }, []);
-
-    const toggleItalic = () => {
-        const isActive = isMarkActive('italic');
-        Transforms.setNodes(
-            editor,
-            { italic: !isActive },
-            { match: (n) => Editor.isInline(n), split: true }
-        );
-    };
-
-    const isMarkActive = (format) => {
-        const marks = Editor.marks(editor);
-        return marks ? marks[format] === true : false;
-    };
-
+function CustomEditor() {
     return (
-        <div className="p-4 border border-gray-300 rounded-lg">
-            <button onMouseDown={(event) => { event.preventDefault(); toggleItalic(); }}>
-                Italic
-            </button>
-            <Slate initialValue={value} editor={editor} value={value} onChange={newValue => setValue(newValue)}>
-                <Editable
-                    renderElement={renderElement}
-                    renderLeaf={renderLeaf}
-                    placeholder="Type something..."
-                    className="min-h-[200px] border border-gray-300 p-2 rounded-md"
-                />
-            </Slate>
-        </div>
+        <CKEditor
+            editor={ ClassicEditor }
+            config={ {
+                licenseKey: 'eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NzE1NDU1OTksImp0aSI6IjFhMWI5NzM3LTNlZWItNDBkNi04NDI0LTAyODA2MWZkODc4YyIsImxpY2Vuc2VkSG9zdHMiOlsiMTI3LjAuMC4xIiwibG9jYWxob3N0IiwiMTkyLjE2OC4qLioiLCIxMC4qLiouKiIsIjE3Mi4qLiouKiIsIioudGVzdCIsIioubG9jYWxob3N0IiwiKi5sb2NhbCJdLCJ1c2FnZUVuZHBvaW50IjoiaHR0cHM6Ly9wcm94eS1ldmVudC5ja2VkaXRvci5jb20iLCJkaXN0cmlidXRpb25DaGFubmVsIjpbImNsb3VkIiwiZHJ1cGFsIl0sImxpY2Vuc2VUeXBlIjoiZGV2ZWxvcG1lbnQiLCJmZWF0dXJlcyI6WyJEUlVQIl0sInZjIjoiOWJlMTI4ZWIifQ._0bn0i2TpSxYEHm6Ik4Q9WUTc2omEuYHZbNpZoQfeH3zj9gKLgSbWsO0PXbSojJ8N63zNo2-lsXq7ZMHidFyfg',
+                plugins: [ Essentials, Paragraph, Bold, Italic, FormatPainter, BlockQuote ],
+                toolbar: [ 'undo', 'redo', '|', 'bold', 'italic', '|', 'formatPainter' ],
+                initialData: '<p>Hello from CKEditor 5 in React!</p>'
+            } }
+        />
     );
-};
+}
 
-export default SlateEditor;
+export default CustomEditor;
